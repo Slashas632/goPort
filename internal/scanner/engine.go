@@ -1,12 +1,10 @@
 package scanner
 
 import (
+	"fmt"
 	"port-scanner/internal/cli"
-	"port-scanner/internal/protocols"
 )
 
 func Run(opts cli.Options) {
-	if opts.IPS {
-		protocols.Ipscanner(opts.IP)
-	}
+	fmt.Println(opts.IP)
 }
