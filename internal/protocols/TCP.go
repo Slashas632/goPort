@@ -1,9 +1,9 @@
 package protocols
 
 import (
-	"port-scanner/internal/cli"
+	"fmt"
 )
 
-func tcp(opts cli.Options) {
-
+func Tcp(port int, ip string) {
+	fmt.Println(port, ip)
 }
