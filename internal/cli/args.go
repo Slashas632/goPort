@@ -13,10 +13,11 @@ type Options struct {
 }
 
 func ParseArgs() Options {
+
 	tcp := flag.Bool("tcp", false, "TCP scan")
 	udp := flag.Bool("udp", false, "UDP scan")
 	ip := flag.String("ip", "127.0.0.1", "IP adress")
-	port := flag.Int("p", 80, "port")
+	port := flag.Int("p", 65535, "port")
 	workers := flag.Int("w", 100, "workers")
 
 	flag.Parse()
