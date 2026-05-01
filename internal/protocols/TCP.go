@@ -1,8 +1,8 @@
 package protocols
 
 import (
-	"fmt"
 	"net"
+	"port-scanner/internal/display"
 	"strconv"
 	"strings"
 	"time"
@@ -30,16 +30,8 @@ func Tcp(port int, ip string) {
 		}
 	}
 
-	banner := strings.TrimSpace(string(buf[:n]))
-	firstLine := strings.SplitN(banner, "\n", 2)[0]
+	banner := strings.SplitN(strings.TrimSpace(string(buf[:n])), "\r\n", 2)[0]
 
-	const (
-		Green  = "\033[32m"
-		Yellow = "\033[33m"
-		Cyan   = "\033[36m"
-		Reset  = "\033[0m"
-	)
-
-	fmt.Printf("%s[OPEN]%s %s | %s%s%s\n", Green, Reset, full_ip, Yellow, firstLine, Reset)
+	display.PrintResult(ip, port, banner)
 
 }

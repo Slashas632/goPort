@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"port-scanner/internal/cli"
+	"port-scanner/internal/display"
 	"port-scanner/internal/scanner"
 )
 
@@ -12,5 +13,6 @@ func main() {
 		fmt.Println("Erro: ", err)
 		return
 	}
+	display.PrintHeader()
 	scanner.Run(opts)
 }
