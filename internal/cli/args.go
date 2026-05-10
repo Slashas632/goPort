@@ -22,7 +22,7 @@ func ParseArgs() (Options, error) {
 	udp := flag.Bool("udp", false, "UDP scan")
 	ip := flag.String("ip", "127.0.0.1", "IP adress")
 	port := flag.String("p", "65535", "port")
-	workers := flag.Int("w", 100, "workers")
+	workers := flag.Int("w", 1000, "workers")
 
 	flag.Parse()
 

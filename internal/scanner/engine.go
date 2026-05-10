@@ -3,32 +3,59 @@ package scanner
 import (
 	"fmt"
 	"port-scanner/internal/cli"
-	"port-scanner/internal/protocols"
+	tcp "port-scanner/internal/protocols/TCP"
+	udp "port-scanner/internal/protocols/UDP"
 	"sync"
 )
 
+const (
+	workerChannelMultiplier = 10
+)
+
 func Run(opts cli.Options) {
-	const buffer = 10
-	ports := make(chan int, opts.Workers*buffer)
 	var wg sync.WaitGroup
 
 	if opts.TCP {
+		TCPports := make(chan int, opts.Workers*workerChannelMultiplier)
 		for i := 0; i < opts.Workers; i++ {
 			wg.Add(1)
-			go TCPworkers(ports, opts.IP, &wg)
+			go TCPworkers(TCPports, opts.IP, &wg)
 		}
-		for port := opts.StartPort; port <= opts.EndPort; port++ {
-			ports <- port
-		}
-		close(ports)
-		wg.Wait()
-		fmt.Println("Work finished.")
+		go func() {
+			for port := opts.StartPort; port <= opts.EndPort; port++ {
+				TCPports <- port
+			}
+			close(TCPports)
+		}()
 	}
+
+	if opts.UDP {
+		UDPports := make(chan int, opts.Workers*workerChannelMultiplier)
+		for i := 0; i < opts.Workers; i++ {
+			wg.Add(1)
+			go UDPworkers(UDPports, opts.IP, &wg)
+		}
+		go func() {
+			for port := opts.StartPort; port <= opts.EndPort; port++ {
+				UDPports <- port
+			}
+			close(UDPports)
+		}()
+	}
+	wg.Wait()
+	fmt.Println("Work finished.")
 }
 
 func TCPworkers(ports <-chan int, ip string, wg *sync.WaitGroup) {
 	defer wg.Done()
 	for port := range ports {
-		protocols.Tcp(port, ip)
+		tcp.Tcp(port, ip)
+	}
+}
+
+func UDPworkers(ports <-chan int, ip string, wg *sync.WaitGroup) {
+	defer wg.Done()
+	for port := range ports {
+		udp.Udp(port, ip)
 	}
 }
