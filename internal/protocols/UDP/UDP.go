@@ -29,20 +29,29 @@ func Udp(port int, ip string) {
 }
 
 func tryProbe(addr string, probe Probe) (string, bool) {
-	conn, err := net.DialTimeout("udp", addr, UDPtimeout)
-	if err != nil {
-		return "", false
-	}
-	defer conn.Close()
+	for attempt := 0; attempt < 2; attempt++ {
+		result, ok := func() (string, bool) {
+			conn, err := net.DialTimeout("udp", addr, UDPtimeout)
+			if err != nil {
+				return "", false
+			}
+			defer conn.Close()
 
-	conn.Write(probe.Payload)
-	conn.SetReadDeadline(time.Now().Add(UDPtimeout))
+			conn.Write(probe.Payload)
+			conn.SetReadDeadline(time.Now().Add(UDPtimeout))
 
-	buf := make([]byte, 4096)
-	n, err := conn.Read(buf)
-	if err != nil {
-		return "", false
+			buf := make([]byte, 4096)
+			n, err := conn.Read(buf)
+			if err != nil {
+				return "", false
+			}
+			banner := strings.SplitN(strings.TrimSpace(string(buf[:n])), "\r\n", 2)[0]
+			return banner, true
+		}()
+		if ok {
+			return result, true
+		}
 	}
-	banner := strings.SplitN(strings.TrimSpace(string(buf[:n])), "\r\n", 2)[0]
-	return banner, true
+	return "", false
+
 }
