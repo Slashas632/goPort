@@ -42,7 +42,6 @@ func ParseArgs() (Options, error) {
 }
 
 func portCheck(port string) (int, int, error) {
-
 	if strings.Contains(port, "-") {
 		var port_split = strings.Split(port, "-")
 
@@ -54,6 +53,12 @@ func portCheck(port string) (int, int, error) {
 		endPortInt, err := strconv.Atoi(port_split[1])
 		if err != nil {
 			return 0, 0, fmt.Errorf("Bad end port: %w", err)
+		}
+		if startPortInt < 0 || endPortInt > 65535 {
+			return 0, 0, fmt.Errorf("Port must be between 0-65535")
+		}
+		if startPortInt > endPortInt {
+			return 0, 0, fmt.Errorf("Start port must be <= end port")
 		}
 		return startPortInt, endPortInt, nil
 	}

@@ -14,7 +14,10 @@ const (
 
 func Run(opts cli.Options) {
 	var wg sync.WaitGroup
-
+	if !opts.TCP && !opts.UDP {
+		fmt.Println("Error: specify -tcp and/or -udp")
+		return
+	}
 	if opts.TCP {
 		TCPports := make(chan int, opts.Workers*workerChannelMultiplier)
 		for i := 0; i < opts.Workers; i++ {
