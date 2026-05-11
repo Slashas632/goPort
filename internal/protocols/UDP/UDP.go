@@ -1,8 +1,10 @@
 package UDP
 
 import (
+	"context"
 	"net"
 	"port-scanner/internal/display"
+	"port-scanner/internal/ratelimit"
 	"strconv"
 	"strings"
 	"time"
@@ -30,6 +32,7 @@ func Udp(port int, ip string) {
 
 func tryProbe(addr string, probe Probe) (string, bool) {
 	for attempt := 0; attempt < 2; attempt++ {
+		ratelimit.Limiter.Wait(context.Background())
 		result, ok := func() (string, bool) {
 			conn, err := net.DialTimeout("udp", addr, UDPtimeout)
 			if err != nil {

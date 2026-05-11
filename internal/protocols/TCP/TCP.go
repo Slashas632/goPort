@@ -1,8 +1,10 @@
 package TCP
 
 import (
+	"context"
 	"net"
 	"port-scanner/internal/display"
+	"port-scanner/internal/ratelimit"
 	"strconv"
 	"strings"
 	"time"
@@ -13,6 +15,7 @@ const (
 )
 
 func Tcp(port int, ip string) {
+	ratelimit.Limiter.Wait(context.Background())
 	fullIp := ip + ":" + strconv.Itoa(port)
 	conn, err := net.DialTimeout("tcp", fullIp, TCPtimeout)
 	if err != nil {
