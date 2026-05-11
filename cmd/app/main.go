@@ -10,7 +10,7 @@ import (
 func main() {
 	opts, err := cli.ParseArgs()
 	if err != nil {
-		fmt.Println("Erro: ", err)
+		fmt.Println("Error: ", err)
 		return
 	}
 	display.PrintHeader()
