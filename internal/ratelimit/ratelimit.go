@@ -6,4 +6,4 @@ import (
 	"golang.org/x/time/rate"
 )
 
-var Limiter = rate.NewLimiter(rate.Every(time.Millisecond), 500)
+var Limiter = rate.NewLimiter(rate.Every(time.Millisecond), 100)

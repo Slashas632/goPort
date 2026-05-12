@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	TCPtimeout = time.Second * 2
+	TCPtimeout = time.Second * 1
 )
 
 func Tcp(port int, ip string) {

@@ -10,8 +10,22 @@ import (
 	"time"
 )
 
+var knownServices = map[int]string{
+	53:    "DNS",
+	111:   "RPC",
+	123:   "NTP",
+	137:   "NetBIOS",
+	161:   "SNMP",
+	500:   "IKE",
+	514:   "Syslog",
+	1900:  "SSDP",
+	5353:  "mDNS",
+	11211: "Memcached",
+	51820: "WireGuard",
+}
+
 const (
-	UDPtimeout = 500 * time.Millisecond
+	UDPtimeout = 300 * time.Millisecond
 )
 
 func Udp(port int, ip string) {
@@ -24,10 +38,24 @@ func Udp(port int, ip string) {
 
 	for _, probe := range probes {
 		if banner, ok := tryProbe(fullIp, probe); ok {
+			if !isPrintable(banner) {
+				if service, ok := knownServices[port]; ok {
+					banner = service
+				}
+			}
 			display.PrintResult(ip, port, banner)
 			return
 		}
 	}
+}
+
+func isPrintable(s string) bool {
+	for _, r := range s {
+		if r < 32 || r > 126 {
+			return false
+		}
+	}
+	return true
 }
 
 func tryProbe(addr string, probe Probe) (string, bool) {
