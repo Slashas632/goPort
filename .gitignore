@@ -41,6 +41,6 @@
 *.dwo
 
 # Go
-/port-scanner
-/port-scanner.exe
+/goPort
+/goPort.exe
 dist/
