@@ -1,4 +1,4 @@
-# 🔍 Port Scanner
+# 🔍 goPort
 
 A fast, concurrent port scanner written in Go. Supports TCP banner grabbing and UDP service detection with protocol-specific probes.
 
@@ -15,17 +15,17 @@ A fast, concurrent port scanner written in Go. Supports TCP banner grabbing and 
 ### 🐧 Linux / macOS
 
 ```bash
-git clone https://github.com/Slashas632/port-scanner
-cd port-scanner
-go build -o port-scanner ./cmd/app
+git clone https://github.com/Slashas632/goPort
+cd goPort
+go build -o goPort ./cmd/app
 ```
 
 ### 🪟 Windows
 
 ```powershell
-git clone https://github.com/Slashas632/port-scanner
-cd port-scanner
-go build -o port-scanner.exe ./cmd/app
+git clone https://github.com/Slashas632/goPort
+cd goPort
+go build -o goPort.exe ./cmd/app
 ```
 
 ## Usage
@@ -33,13 +33,13 @@ go build -o port-scanner.exe ./cmd/app
 ### 🐧 Linux / macOS
 
 ```bash
-./port-scanner [flags]
+./goPort [flags]
 ```
 
 ### 🪟 Windows
 
 ```powershell
-.\port-scanner.exe [flags]
+.\goPort.exe [flags]
 ```
 
 ### Flags
@@ -57,31 +57,31 @@ go build -o port-scanner.exe ./cmd/app
 **🐧 Linux / macOS**
 ```bash
 # TCP scan common ports
-./port-scanner -tcp -ip 10.0.0.1 -p 0-1024
+./goPort -tcp -ip 10.0.0.1 -p 0-1024
 
 # UDP scan all ports
-./port-scanner -udp -ip 10.0.0.1 -p 0-65535
+./goPort -udp -ip 10.0.0.1 -p 0-65535
 
 # TCP + UDP full scan
-./port-scanner -tcp -udp -ip 10.0.0.1 -p 0-65535
+./goPort -tcp -udp -ip 10.0.0.1 -p 0-65535
 
 # Custom worker count
-./port-scanner -tcp -ip 10.0.0.1 -p 0-65535 -w 500
+./goPort -tcp -ip 10.0.0.1 -p 0-65535 -w 500
 ```
 
 **🪟 Windows**
 ```powershell
 # TCP scan common ports
-.\port-scanner.exe -tcp -ip 10.0.0.1 -p 0-1024
+.\goPort.exe -tcp -ip 10.0.0.1 -p 0-1024
 
 # UDP scan all ports
-.\port-scanner.exe -udp -ip 10.0.0.1 -p 0-65535
+.\goPort.exe -udp -ip 10.0.0.1 -p 0-65535
 
 # TCP + UDP full scan
-.\port-scanner.exe -tcp -udp -ip 10.0.0.1 -p 0-65535
+.\goPort.exe -tcp -udp -ip 10.0.0.1 -p 0-65535
 
 # Custom worker count
-.\port-scanner.exe -tcp -ip 10.0.0.1 -p 0-65535 -w 500
+.\goPort.exe -tcp -ip 10.0.0.1 -p 0-65535 -w 500
 ```
 
 ### Example Output
