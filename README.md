@@ -15,7 +15,7 @@ A fast, concurrent port scanner written in Go. Supports TCP banner grabbing and 
 ### 🐧 Linux / macOS
 
 ```bash
-git clone https://github.com/yourusername/port-scanner
+git clone https://github.com/Slashas632/port-scanner
 cd port-scanner
 go build -o port-scanner ./cmd/app
 ```
@@ -23,7 +23,7 @@ go build -o port-scanner ./cmd/app
 ### 🪟 Windows
 
 ```powershell
-git clone https://github.com/yourusername/port-scanner
+git clone https://github.com/Slashas632/port-scanner
 cd port-scanner
 go build -o port-scanner.exe ./cmd/app
 ```
