@@ -39,3 +39,8 @@
 
 # debug information files
 *.dwo
+
+# Go
+/port-scanner
+/port-scanner.exe
+dist/
