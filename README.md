@@ -50,7 +50,7 @@ go build -o goPort.exe ./cmd/app
 | `-udp` | false | Enable UDP scanning |
 | `-ip` | 127.0.0.1 | Target IP address |
 | `-p` | 65535 | Port or port range (e.g. `80` or `0-65535`) |
-| `-w` | 1000 | Number of workers |
+| `-w` | 500 | Number of workers |
 
 ### Examples
 
