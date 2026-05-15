@@ -6,6 +6,7 @@ import (
 	"port-scanner/internal/plugins"
 	tcp "port-scanner/internal/protocols/TCP"
 	udp "port-scanner/internal/protocols/UDP"
+	"port-scanner/internal/ratelimit"
 	"sync"
 )
 
@@ -34,6 +35,9 @@ func Run(opts cli.Options) {
 		fmt.Println("Error: specify -tcp and/or -udp")
 		return
 	}
+
+	ratelimit.Init(opts.Workers)
+
 	if opts.TCP {
 		TCPports := make(chan int, opts.Workers*workerChannelMultiplier)
 		for i := 0; i < opts.Workers; i++ {
