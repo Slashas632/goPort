@@ -5,8 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="145c1798-c8ab-499e-b43c-addd30b7ec71" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/internal/ratelimit/ratelimit.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/ratelimit/ratelimit.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/scanner/engine.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/scanner/engine.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
