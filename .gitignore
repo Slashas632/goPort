@@ -44,3 +44,6 @@
 /goPort
 /goPort.exe
 dist/
+
+# Lua
+*.lua

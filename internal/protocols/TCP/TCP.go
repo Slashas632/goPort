@@ -4,6 +4,7 @@ import (
 	"context"
 	"net"
 	"port-scanner/internal/display"
+	"port-scanner/internal/plugins"
 	"port-scanner/internal/ratelimit"
 	"strconv"
 	"strings"
@@ -40,6 +41,7 @@ func Tcp(port int, ip string) {
 
 	banner := strings.SplitN(strings.TrimSpace(string(buf[:n])), "\r\n", 2)[0]
 
+	plugins.RunAll(ip, port, banner)
 	display.PrintResult(ip, port, banner)
 
 }

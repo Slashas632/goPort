@@ -9,10 +9,21 @@ A fast, concurrent port scanner written in Go. Supports TCP banner grabbing and 
 - **Concurrent** – worker pool architecture for high-speed scanning
 - **Rate limiting** – built-in rate limiter to avoid network flooding
 - **Banner grabbing** – automatically detects service versions
+- **Plugin system** – extend functionality with Lua scripts
 
 ## Installation
 
-### 🐧 Linux / macOS
+### Arch Linux (AUR)
+
+> ⚠️ AUR updates may lag behind GitHub releases. For the latest version, build from source.
+
+```bash
+yay -S goport
+```
+
+### 🐧 Linux / macOS (from source)
+
+> Requires [Go 1.21+](https://go.dev/dl/)
 
 ```bash
 git clone https://github.com/Slashas632/goPort
@@ -20,7 +31,9 @@ cd goPort
 go build -o goPort ./cmd/app
 ```
 
-### 🪟 Windows
+### 🪟 Windows (from source)
+
+> Requires [Go 1.21+](https://go.dev/dl/)
 
 ```powershell
 git clone https://github.com/Slashas632/goPort
@@ -51,6 +64,8 @@ go build -o goPort.exe ./cmd/app
 | `-ip` | 127.0.0.1 | Target IP address |
 | `-p` | 65535 | Port or port range (e.g. `80` or `0-65535`) |
 | `-w` | 500 | Number of workers |
+| `-install` | – | Install a Lua plugin |
+| `-uninstall` | – | Uninstall a Lua plugin |
 
 ### Examples
 
@@ -91,11 +106,80 @@ STATUS     IP                   PORT     BANNER
 ────────────────────────────────────────────────────────────────────────────────
 [OPEN]     10.0.0.1             22       SSH-2.0-OpenSSH_9.2p1 Debian-2+deb12u3
 [OPEN]     10.0.0.1             25       220 mail.example.com ESMTP Postfix
-[OPEN]     10.0.0.1             53       (DNS)
+[OPEN]     10.0.0.1             53       DNS
 [OPEN]     10.0.0.1             80       HTTP/1.1 200 OK
 [OPEN]     10.0.0.1             110      +OK Dovecot ready
 [OPEN]     10.0.0.1             143      * OK Dovecot ready
 Work finished.
+```
+
+## 🔌 Plugin System
+
+> ⚠️ Plugins use a third-party Lua interpreter ([gopher-lua](https://github.com/yuin/gopher-lua)). Only install plugins from sources you trust.
+
+Plugins are Lua scripts that run after each port is scanned. They receive the IP, port, and banner as arguments.
+
+### Plugin Structure
+
+```lua
+function scan(ip, port, banner)
+    if string.find(banner, "SSH") then
+        print("[SSH] " .. ip .. ":" .. port .. " -> " .. banner)
+    end
+end
+```
+
+### Installing a Plugin
+
+**🐧 Linux / macOS**
+```bash
+./goPort -install /home/user/myplugin.lua
+./goPort -install ~/myplugin.lua
+```
+
+**🪟 Windows**
+```powershell
+.\goPort.exe -install C:\Users\user\myplugin.lua
+.\goPort.exe -install .\myplugin.lua
+```
+
+### Uninstalling a Plugin
+
+**🐧 Linux / macOS**
+```bash
+./goPort -uninstall myplugin.lua
+```
+
+**🪟 Windows**
+```powershell
+.\goPort.exe -uninstall myplugin.lua
+```
+
+> Note: `-uninstall` takes only the filename, not the full path.
+
+### Plugin Storage
+
+Plugins are stored in:
+- **Linux / macOS:** `~/.goPort/plugins/`
+- **Windows:** `C:\Users\<user>\.goPort\plugins\`
+
+### Example Plugin
+
+```lua
+-- Detects common services and prints alerts
+function scan(ip, port, banner)
+    if string.find(banner, "SSH") then
+        print("[SSH]  " .. ip .. ":" .. port .. " -> " .. banner)
+    end
+
+    if string.find(banner, "HTTP") then
+        print("[HTTP] " .. ip .. ":" .. port .. " -> " .. banner)
+    end
+
+    if string.find(banner, "220") then
+        print("[SMTP] " .. ip .. ":" .. port .. " -> " .. banner)
+    end
+end
 ```
 
 ## UDP Probes
@@ -124,7 +208,7 @@ Unknown ports fall back to generic probes (NULL, CRLF, HELLO).
 ## Project Structure
 
 ```
-port-scanner/
+goPort/
 ├── cmd/
 │   └── app/
 │       └── main.go
@@ -133,6 +217,9 @@ port-scanner/
     │   └── args.go
     ├── display/
     │   └── table.go
+    ├── plugins/
+    │   ├── manager.go
+    │   └── runner.go
     ├── protocols/
     │   ├── TCP/
     │   │   └── TCP.go

@@ -2,4 +2,7 @@ module port-scanner
 
 go 1.26.2
 
-require golang.org/x/time v0.15.0 // indirect
+require (
+	github.com/yuin/gopher-lua v1.1.2 // indirect
+	golang.org/x/time v0.15.0 // indirect
+)

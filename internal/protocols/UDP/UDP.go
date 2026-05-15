@@ -4,6 +4,7 @@ import (
 	"context"
 	"net"
 	"port-scanner/internal/display"
+	"port-scanner/internal/plugins"
 	"port-scanner/internal/ratelimit"
 	"strconv"
 	"strings"
@@ -43,6 +44,7 @@ func Udp(port int, ip string) {
 					banner = service
 				}
 			}
+			plugins.RunAll(ip, port, banner)
 			display.PrintResult(ip, port, banner)
 			return
 		}

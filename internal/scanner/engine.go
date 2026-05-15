@@ -3,6 +3,7 @@ package scanner
 import (
 	"fmt"
 	"port-scanner/internal/cli"
+	"port-scanner/internal/plugins"
 	tcp "port-scanner/internal/protocols/TCP"
 	udp "port-scanner/internal/protocols/UDP"
 	"sync"
@@ -14,6 +15,21 @@ const (
 
 func Run(opts cli.Options) {
 	var wg sync.WaitGroup
+
+	if opts.Install != "" {
+		if err := plugins.Install(opts.Install); err != nil {
+			fmt.Printf("Plugin installation failed: %s\n", err)
+		}
+		return
+	}
+
+	if opts.Uninstall != "" {
+		if err := plugins.Uninstall(opts.Uninstall); err != nil {
+			fmt.Printf("Plugin uninstallation failed: %s\n", err)
+		}
+		return
+	}
+
 	if !opts.TCP && !opts.UDP {
 		fmt.Println("Error: specify -tcp and/or -udp")
 		return

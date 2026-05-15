@@ -14,6 +14,8 @@ type Options struct {
 	Workers   int
 	StartPort int
 	EndPort   int
+	Install   string
+	Uninstall string
 }
 
 func ParseArgs() (Options, error) {
@@ -21,8 +23,10 @@ func ParseArgs() (Options, error) {
 	tcp := flag.Bool("tcp", false, "TCP scan")
 	udp := flag.Bool("udp", false, "UDP scan")
 	ip := flag.String("ip", "127.0.0.1", "IP adress")
-	port := flag.String("p", "65535", "port")
-	workers := flag.Int("w", 500, "workers")
+	port := flag.String("p", "65535", "Port")
+	workers := flag.Int("w", 500, "Workers")
+	install := flag.String("install", "", "Install a plugin (lua file)")
+	uninstall := flag.String("uninstall", "", "Uninstall a plugin (lua file)")
 
 	flag.Parse()
 
@@ -38,6 +42,8 @@ func ParseArgs() (Options, error) {
 		Workers:   *workers,
 		StartPort: startPort,
 		EndPort:   endPort,
+		Install:   *install,
+		Uninstall: *uninstall,
 	}, nil
 }
 
