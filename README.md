@@ -46,12 +46,17 @@ go build -o goPort.exe ./cmd/app
 ### 🐧 Linux / macOS
 
 ```bash
+# AUR or installed to PATH
+goPort [flags]
+
+# Built from source
 ./goPort [flags]
 ```
 
 ### 🪟 Windows
 
 ```powershell
+# Built from source
 .\goPort.exe [flags]
 ```
 
@@ -72,16 +77,16 @@ go build -o goPort.exe ./cmd/app
 **🐧 Linux / macOS**
 ```bash
 # TCP scan common ports
-./goPort -tcp -ip 10.0.0.1 -p 0-1024
+goPort -tcp -ip 10.0.0.1 -p 0-1024
 
 # UDP scan all ports
-./goPort -udp -ip 10.0.0.1 -p 0-65535
+goPort -udp -ip 10.0.0.1 -p 0-65535
 
 # TCP + UDP full scan
-./goPort -tcp -udp -ip 10.0.0.1 -p 0-65535
+goPort -tcp -udp -ip 10.0.0.1 -p 0-65535
 
 # Custom worker count
-./goPort -tcp -ip 10.0.0.1 -p 0-65535 -w 500
+goPort -tcp -ip 10.0.0.1 -p 0-65535 -w 500
 ```
 
 **🪟 Windows**
@@ -133,8 +138,8 @@ end
 
 **🐧 Linux / macOS**
 ```bash
-./goPort -install /home/user/myplugin.lua
-./goPort -install ~/myplugin.lua
+goPort -install /home/user/myplugin.lua
+goPort -install ~/myplugin.lua
 ```
 
 **🪟 Windows**
@@ -147,7 +152,7 @@ end
 
 **🐧 Linux / macOS**
 ```bash
-./goPort -uninstall myplugin.lua
+goPort -uninstall myplugin.lua
 ```
 
 **🪟 Windows**
