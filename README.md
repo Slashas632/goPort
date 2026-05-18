@@ -106,6 +106,9 @@ goPort -tcp -ip 10.0.0.1 -p 0-65535 -json output.json
 
 # Custom worker count
 .\goPort.exe -tcp -ip 10.0.0.1 -p 0-65535 -w 500
+
+# Export to json
+.\goPort.exe -tcp -ip 10.0.0.1 -p 0-65535 -json output.json
 ```
 
 ### Example Output
