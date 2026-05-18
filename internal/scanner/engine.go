@@ -3,6 +3,8 @@ package scanner
 import (
 	"fmt"
 	"port-scanner/internal/cli"
+	"port-scanner/internal/display"
+	"port-scanner/internal/output"
 	"port-scanner/internal/plugins"
 	tcp "port-scanner/internal/protocols/TCP"
 	udp "port-scanner/internal/protocols/UDP"
@@ -15,27 +17,15 @@ const (
 )
 
 func Run(opts cli.Options) {
+	if !ErrorHandler(opts) {
+		return
+	}
+
+	output.Init(opts.Json)
+
+	display.PrintHeader()
+
 	var wg sync.WaitGroup
-
-	if opts.Install != "" {
-		if err := plugins.Install(opts.Install); err != nil {
-			fmt.Printf("Plugin installation failed: %s\n", err)
-		}
-		return
-	}
-
-	if opts.Uninstall != "" {
-		if err := plugins.Uninstall(opts.Uninstall); err != nil {
-			fmt.Printf("Plugin uninstallation failed: %s\n", err)
-		}
-		return
-	}
-
-	if !opts.TCP && !opts.UDP {
-		fmt.Println("Error: specify -tcp and/or -udp")
-		return
-	}
-
 	ratelimit.Init(opts.Workers)
 
 	if opts.TCP {
@@ -65,7 +55,13 @@ func Run(opts cli.Options) {
 			close(UDPports)
 		}()
 	}
+
 	wg.Wait()
+	if opts.Json != "" { // ← pridėk čia
+		if err := output.SaveJson(opts.Json); err != nil {
+			fmt.Println("Error saving JSON:", err)
+		}
+	}
 	fmt.Println("Work finished.")
 }
 
@@ -81,4 +77,32 @@ func UDPworkers(ports <-chan int, ip string, wg *sync.WaitGroup) {
 	for port := range ports {
 		udp.Udp(port, ip)
 	}
+}
+
+func ErrorHandler(opts cli.Options) bool {
+	if opts.Install != "" {
+		if err := plugins.Install(opts.Install); err != nil {
+			fmt.Printf("Plugin installation failed: %s\n", err)
+		}
+		return false
+	}
+	if opts.Uninstall != "" {
+		if err := plugins.Uninstall(opts.Uninstall); err != nil {
+			fmt.Printf("Plugin uninstallation failed: %s\n", err)
+		}
+		return false
+	}
+	if !opts.TCP && !opts.UDP {
+		fmt.Println("Error: specify -tcp and/or -udp")
+		return false
+	}
+	if opts.IP == "" {
+		fmt.Println("Error: specify -ip")
+		return false
+	}
+	if opts.StartPort == 0 && opts.EndPort == 0 {
+		fmt.Println("Error: specify -p")
+		return false
+	}
+	return true
 }

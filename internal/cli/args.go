@@ -16,22 +16,23 @@ type Options struct {
 	EndPort   int
 	Install   string
 	Uninstall string
+	Json      string
 }
 
 func ParseArgs() (Options, error) {
-
 	tcp := flag.Bool("tcp", false, "TCP scan")
 	udp := flag.Bool("udp", false, "UDP scan")
-	ip := flag.String("ip", "127.0.0.1", "IP adress")
-	port := flag.String("p", "65535", "Port")
+	ip := flag.String("ip", "", "IP adress")
+	port := flag.String("p", "", "Port")
 	workers := flag.Int("w", 500, "Workers")
 	install := flag.String("install", "", "Install a plugin (lua file)")
 	uninstall := flag.String("uninstall", "", "Uninstall a plugin (lua file)")
+	json := flag.String("json", "", "JSON output file")
 
 	flag.Parse()
 
 	startPort, endPort, err := portCheck(*port)
-	if err != nil {
+	if err != nil && (*install == "" && *uninstall == "") {
 		return Options{}, fmt.Errorf("invalid port: %w", err)
 	}
 
@@ -44,21 +45,25 @@ func ParseArgs() (Options, error) {
 		EndPort:   endPort,
 		Install:   *install,
 		Uninstall: *uninstall,
+		Json:      *json,
 	}, nil
 }
 
 func portCheck(port string) (int, int, error) {
+	if port == "" {
+		return 0, 0, nil
+	}
 	if strings.Contains(port, "-") {
 		var port_split = strings.Split(port, "-")
 
 		startPortInt, err := strconv.Atoi(port_split[0])
 		if err != nil {
-			return 0, 0, fmt.Errorf("Bad start port: %w", err)
+			return 0, 0, fmt.Errorf("'%s' is not a valid port number", port_split[0])
 		}
 
 		endPortInt, err := strconv.Atoi(port_split[1])
 		if err != nil {
-			return 0, 0, fmt.Errorf("Bad end port: %w", err)
+			return 0, 0, fmt.Errorf("'%s' is not a valid port number", port_split[1])
 		}
 		if startPortInt < 0 || endPortInt > 65535 {
 			return 0, 0, fmt.Errorf("Port must be between 0-65535")
@@ -72,7 +77,7 @@ func portCheck(port string) (int, int, error) {
 	singlePort, err := strconv.Atoi(port)
 
 	if err != nil {
-		return 0, 0, fmt.Errorf("Bad port: %w", err)
+		return 0, 0, fmt.Errorf("'%s' is not a valid port number", port)
 	}
 	return singlePort, singlePort, nil
 }

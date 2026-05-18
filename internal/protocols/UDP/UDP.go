@@ -4,6 +4,7 @@ import (
 	"context"
 	"net"
 	"port-scanner/internal/display"
+	"port-scanner/internal/output"
 	"port-scanner/internal/plugins"
 	"port-scanner/internal/ratelimit"
 	"strconv"
@@ -46,6 +47,9 @@ func Udp(port int, ip string) {
 			}
 			plugins.RunAll(ip, port, banner)
 			display.PrintResult(ip, port, banner)
+			if output.JSONPath != "" {
+				output.AddResult(ip, port, banner)
+			}
 			return
 		}
 	}
