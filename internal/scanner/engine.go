@@ -2,13 +2,13 @@ package scanner
 
 import (
 	"fmt"
-	"port-scanner/internal/cli"
-	"port-scanner/internal/display"
-	"port-scanner/internal/output"
-	"port-scanner/internal/plugins"
-	tcp "port-scanner/internal/protocols/TCP"
-	udp "port-scanner/internal/protocols/UDP"
-	"port-scanner/internal/ratelimit"
+	"github.com/Slashas632/goPort/internal/cli"
+	"github.com/Slashas632/goPort/internal/display"
+	"github.com/Slashas632/goPort/internal/output"
+	"github.com/Slashas632/goPort/internal/plugins"
+	tcp "github.com/Slashas632/goPort/internal/protocols/TCP"
+	udp "github.com/Slashas632/goPort/internal/protocols/UDP"
+	"github.com/Slashas632/goPort/internal/ratelimit"
 	"sync"
 )
 
