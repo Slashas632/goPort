@@ -1,6 +1,10 @@
 # 🔍 goPort
 
-A fast, concurrent port scanner written in Go. Supports TCP banner grabbing and UDP service detection with protocol-specific probes.
+[![Go Reference](https://pkg.go.dev/badge/github.com/Slashas632/goPort.svg)](https://pkg.go.dev/github.com/Slashas632/goPort)
+[![Test](https://github.com/Slashas632/goPort/actions/workflows/test.yml/badge.svg)](https://github.com/Slashas632/goPort/actions/workflows/test.yml)
+[![License: MIT](https://img.shields.io/github/license/Slashas632/goPort)](LICENSE)
+
+A fast, concurrent TCP/UDP port scanner written in Go, with protocol-specific banner grabbing, JSON export, and a Lua plugin system for extending scan behavior — a lightweight alternative to nmap for quick concurrent scans.
 
 ## Features
 
@@ -24,7 +28,7 @@ yay -S goport
 
 ### 🐧 Linux / macOS (from source)
 
-> Requires [Go 1.21+](https://go.dev/dl/)
+> Requires [Go 1.22+](https://go.dev/dl/)
 
 ```bash
 git clone https://github.com/Slashas632/goPort
@@ -34,7 +38,7 @@ go build -o goPort ./cmd/app
 
 ### 🪟 Windows (from source)
 
-> Requires [Go 1.21+](https://go.dev/dl/)
+> Requires [Go 1.22+](https://go.dev/dl/)
 
 ```powershell
 git clone https://github.com/Slashas632/goPort
@@ -226,24 +230,42 @@ goPort/
 │       └── main.go
 └── internal/
     ├── output/
-    |   └── json.go
+    │   ├── json.go
+    │   └── json_test.go
     ├── cli/
-    │   └── args.go
+    │   ├── args.go
+    │   └── args_test.go
     ├── display/
-    │   └── table.go
+    │   ├── table.go
+    │   └── table_test.go
     ├── plugins/
     │   ├── manager.go
-    │   └── runner.go
+    │   ├── manager_test.go
+    │   ├── runner.go
+    │   └── runner_test.go
     ├── protocols/
     │   ├── TCP/
-    │   │   └── TCP.go
+    │   │   ├── TCP.go
+    │   │   └── TCP_test.go
     │   └── UDP/
     │       ├── UDP.go
-    │       └── udp_probes.go
+    │       ├── udp_probes.go
+    │       └── udp_test.go
     ├── ratelimit/
-    │   └── ratelimit.go
+    │   ├── ratelimit.go
+    │   └── ratelimit_test.go
     └── scanner/
-        └── engine.go
+        ├── engine.go
+        └── engine_test.go
+```
+
+## Testing
+
+The project has an automated test suite covering CLI argument parsing, the rate limiter, JSON output, the plugin manager and Lua runner, and both the TCP and UDP scanning paths (including end-to-end scans against local test servers). CI runs the full suite with the race detector on every push.
+
+```bash
+go test ./... -cover
+go test ./... -race
 ```
 
 ## ⚠️ Legal Disclaimer
