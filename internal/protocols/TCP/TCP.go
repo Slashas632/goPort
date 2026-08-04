@@ -3,13 +3,14 @@ package TCP
 import (
 	"context"
 	"net"
+	"strconv"
+	"strings"
+	"time"
+
 	"github.com/Slashas632/goPort/internal/display"
 	"github.com/Slashas632/goPort/internal/output"
 	"github.com/Slashas632/goPort/internal/plugins"
 	"github.com/Slashas632/goPort/internal/ratelimit"
-	"strconv"
-	"strings"
-	"time"
 )
 
 const (

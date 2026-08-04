@@ -79,5 +79,8 @@ func portCheck(port string) (int, int, error) {
 	if err != nil {
 		return 0, 0, fmt.Errorf("'%s' is not a valid port number", port)
 	}
+	if singlePort < 0 || singlePort > 65535 {
+		return 0, 0, fmt.Errorf("Port must be between 0-65535")
+	}
 	return singlePort, singlePort, nil
 }

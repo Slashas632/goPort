@@ -2,6 +2,8 @@ package scanner
 
 import (
 	"fmt"
+	"sync"
+
 	"github.com/Slashas632/goPort/internal/cli"
 	"github.com/Slashas632/goPort/internal/display"
 	"github.com/Slashas632/goPort/internal/output"
@@ -9,7 +11,6 @@ import (
 	tcp "github.com/Slashas632/goPort/internal/protocols/TCP"
 	udp "github.com/Slashas632/goPort/internal/protocols/UDP"
 	"github.com/Slashas632/goPort/internal/ratelimit"
-	"sync"
 )
 
 const (
@@ -102,6 +103,14 @@ func ErrorHandler(opts cli.Options) bool {
 	}
 	if opts.StartPort == 0 && opts.EndPort == 0 {
 		fmt.Println("Error: specify -p")
+		return false
+	}
+	// Workers <= 0 would size the port channel as 0 and spawn zero
+	// worker goroutines, so the port-feeder goroutine blocks forever
+	// on an unbuffered/unread channel (goroutine leak) while Run()
+	// happily reports "Work finished." without scanning anything.
+	if opts.Workers <= 0 {
+		fmt.Println("Error: -w must be greater than 0")
 		return false
 	}
 	return true

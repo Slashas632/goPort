@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/Slashas632/goPort/internal/cli"
 	"github.com/Slashas632/goPort/internal/scanner"
 )

@@ -54,6 +54,9 @@ func List() ([]string, error) {
 }
 
 func Uninstall(name string) error {
+	// Guard against path traversal (e.g. "-uninstall ../../etc/passwd"):
+	// only ever operate on a bare filename inside PluginDir().
+	name = filepath.Base(name)
 	path := filepath.Join(PluginDir(), name)
 
 	if _, err := os.Stat(path); os.IsNotExist(err) {
