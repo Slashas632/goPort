@@ -1,4 +1,4 @@
-module port-scanner
+module github.com/Slashas632/goPort
 
 go 1.26.2
 

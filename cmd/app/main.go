@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"port-scanner/internal/cli"
-	"port-scanner/internal/scanner"
+	"github.com/Slashas632/goPort/internal/cli"
+	"github.com/Slashas632/goPort/internal/scanner"
 )
 
 func main() {

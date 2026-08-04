@@ -10,6 +10,7 @@ A fast, concurrent port scanner written in Go. Supports TCP banner grabbing and 
 - **Rate limiting** – built-in rate limiter to avoid network flooding
 - **Banner grabbing** – automatically detects service versions
 - **Plugin system** – extend functionality with Lua scripts
+- **Json export** - export results to .json format
 
 ## Installation
 
@@ -71,7 +72,7 @@ goPort [flags]
 | `-w` | 500 | Number of workers |
 | `-install` | – | Install a Lua plugin |
 | `-uninstall` | – | Uninstall a Lua plugin |
-
+| `-json` | - | Export results to json |
 ### Examples
 
 **🐧 Linux / macOS**
@@ -87,6 +88,9 @@ goPort -tcp -udp -ip 10.0.0.1 -p 0-65535
 
 # Custom worker count
 goPort -tcp -ip 10.0.0.1 -p 0-65535 -w 500
+
+# Export to json
+goPort -tcp -ip 10.0.0.1 -p 0-65535 -json output.json
 ```
 
 **🪟 Windows**
@@ -102,6 +106,9 @@ goPort -tcp -ip 10.0.0.1 -p 0-65535 -w 500
 
 # Custom worker count
 .\goPort.exe -tcp -ip 10.0.0.1 -p 0-65535 -w 500
+
+# Export to json
+.\goPort.exe -tcp -ip 10.0.0.1 -p 0-65535 -json output.json
 ```
 
 ### Example Output
@@ -218,6 +225,8 @@ goPort/
 │   └── app/
 │       └── main.go
 └── internal/
+    ├── output/
+    |   └── json.go
     ├── cli/
     │   └── args.go
     ├── display/
