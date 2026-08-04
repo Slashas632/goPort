@@ -57,7 +57,7 @@ func Run(opts cli.Options) {
 	}
 
 	wg.Wait()
-	if opts.Json != "" { // ← pridėk čia
+	if opts.Json != "" {
 		if err := output.SaveJson(opts.Json); err != nil {
 			fmt.Println("Error saving JSON:", err)
 		}
