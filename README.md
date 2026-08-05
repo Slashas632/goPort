@@ -20,10 +20,10 @@ A fast, concurrent TCP/UDP port scanner written in Go, with protocol-specific ba
 
 ### Arch Linux (AUR)
 
-> ⚠️ AUR updates may lag behind GitHub releases. For the latest version, build from source.
+> ⚠️ **AUR package publishing is currently blocked.** Arch Linux temporarily disabled AUR write access ([announcement](https://www.bleepingcomputer.com/news/security/arch-linux-disables-aur-package-adoption-to-stop-malware-flood/)) following a wave of malicious package takeovers, so the AUR package cannot be updated right now. The AUR is still stuck on **v1.2.0** — for the current release, build from source (below) or grab a prebuilt binary from the [Releases page](https://github.com/Slashas632/goPort/releases/latest).
 
 ```bash
-yay -S goport
+yay -S goport   # currently installs v1.2.0 until AUR publishing reopens
 ```
 
 ### 🐧 Linux / macOS (from source)
